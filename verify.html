@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Verify Document | RationMaker Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-blue: #006aff;
+            --brand-dark: #0f172a;
+            --bg-page: #f8fafc;
+            --success-green: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--bg-page); 
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-wrapper {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(0,0,0,0.05);
+        }
+
+        /* --- Premium Header --- */
+        header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu-toggle {
+            width: 45px;
+            height: 45px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .brand-section { text-align: center; }
+        .brand-name { font-size: 22px; font-weight: 900; letter-spacing: -1px; }
+        .brand-name span { color: var(--brand-blue); }
+        .brand-tag { 
+            background: var(--brand-blue); 
+            color: white; 
+            font-size: 9px; 
+            padding: 2px 10px; 
+            border-radius: 50px; 
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* --- Main Content --- */
+        main {
+            flex: 1;
+            padding: 24px 20px 120px;
+        }
+
+        /* Page Header Box */
+        .page-header-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 25px rgba(0, 106, 255, 0.05);
+        }
+
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            background: #eef2ff;
+            color: #6366f1;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .text-info h1 { font-size: 20px; font-weight: 900; color: var(--brand-dark); }
+        .text-info p { font-size: 12px; color: #64748b; font-weight: 600; }
+
+        /* --- Verification Upload Card --- */
+        .upload-card {
+            background: white;
+            border: 2px dashed #cbd5e1;
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .upload-card:active {
+            border-color: var(--brand-blue);
+            background: var(--light-blue);
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            background: #f0fdf4;
+            color: var(--success-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .upload-card h2 { font-size: 18px; font-weight: 800; color: var(--brand-dark); }
+        .upload-card p { font-size: 13px; color: #64748b; margin: 8px 0 25px; }
+
+        .btn-verify {
+            background: var(--brand-blue);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(0, 106, 255, 0.2);
+        }
+
+        /* --- Sidebar & Nav (Same as others) --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; max-width: 480px;
+            background: white; display: flex; justify-content: space-around;
+            padding: 12px 0 25px; border-top: 1px solid #e2e8f0; z-index: 1000;
+        }
+        .nav-link { text-decoration: none; color: #94a3b8; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-link.active { color: var(--brand-blue); }
+        .nav-link i { font-size: 20px; }
+        .nav-link span { font-size: 10px; font-weight: 800; }
+        
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2500;
+            top: 0; left: 0; background: #fff; overflow-x: hidden;
+            transition: 0.5s; display: flex; flex-direction: column;
+        }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; backdrop-filter: blur(4px); }
+        /* डिफ़ॉल्ट रूप से सभी लिंक्स ग्रे रहेंगे */
+.nav-link {
+    color: #94a3b8 !important; /* हल्का ग्रे */
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+/* केवल .active क्लास वाले लिंक पर ही नीला रंग आएगा */
+.nav-link.active {
+    color: #006aff !important; /* ब्रांड ब्लू */
+}
+
+/* आइकन का रंग भी टेक्स्ट के हिसाब से बदलेगा */
+.nav-link i {
+    color: inherit; 
+    font-size: 20px;
+}
+/* Sidebar Main Container */
+.sidebar {
+    height: 100%; width: 0; position: fixed; z-index: 2500;
+    top: 0; left: 0; background: #ffffff; overflow-x: hidden;
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column;
+}
+
+/* Sidebar Header Design */
+.sidebar-header {
+    background: linear-gradient(135deg, #006aff 0%, #00d4ff 100%);
+    padding: 50px 20px 25px;
+    position: relative;
+    color: white;
+}
+
+.sb-user-profile { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.sb-avatar { 
+    width: 45px; height: 45px; background: rgba(255,255,255,0.2); 
+    border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+
+.sb-brand-name { font-size: 22px; font-weight: 900; }
+.sb-brand-name span { color: #002d6d; }
+.sb-tagline { font-size: 9px; font-weight: 700; opacity: 0.8; letter-spacing: 1px; }
+
+.sb-verified-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 5px 12px; border-radius: 50px;
+    width: fit-content; margin-top: 15px; font-size: 10px; font-weight: 800;
+}
+
+/* Links Styling */
+.sidebar-links { padding: 20px 10px; flex: 1; }
+.side-link {
+    display: flex; align-items: center; gap: 15px;
+    padding: 14px 18px; text-decoration: none; color: #475569;
+    font-weight: 700; border-radius: 15px; margin-bottom: 5px; transition: 0.3s;
+}
+
+.side-link.active { background: #eef4ff; color: #006aff; }
+.hot-tag { background: #ff4757; color: white; font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: auto; }
+
+.sidebar-footer {
+    padding: 20px; text-align: center; font-size: 10px; color: #94a3b8;
+    border-top: 1px solid #f1f5f9;
+}
+.side-link.active, .nav-link.active {
+    color: #006aff !important;
+    background: #eef4ff !important; /* बैकग्राउंड के लिए */
+}
+/* पहले सभी साइड लिंक्स को डिफ़ॉल्ट (ग्रे) करें */
+.sidebar-links .side-link {
+    background: transparent !important;
+    color: #475569 !important; /* ग्रे कलर */
+}
+
+/* केवल उस लिंक को नीला करें जिसमें 'active' क्लास जुड़ी हो */
+.sidebar-links .side-link.active {
+    background: #eef4ff !important; /* हल्का नीला बैकग्राउंड */
+    color: #006aff !important; /* गहरा नीला टेक्स्ट */
+}
+
+/* आइकॉन का रंग भी टेक्स्ट के साथ बदलेगा */
+.side-link.active i {
+    color: #006aff !important;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        <header>
+            <div class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+            <div class="brand-section">
+                <div class="brand-name">Ration<span>Maker</span></div>
+                <div class="brand-tag">By Aman Designer</div>
+            </div>
+            <div class="menu-toggle" style="background: var(--brand-blue); color: white;">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+        </header>
+
+        <main>
+            <div class="page-header-box">
+                <div class="icon-circle">
+                    <i class="fa-solid fa-file-shield"></i>
+                </div>
+                <div class="text-info">
+                    <h1>Verify Document</h1>
+                    <p>राशन कार्ड की सत्यता की जांच करें</p>
+                </div>
+            </div>
+
+            <div class="upload-card">
+                <div class="upload-icon">
+                    <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <h2>Scan or Upload</h2>
+                <p>Verify your Ration Card by uploading the digital copy or scanning the QR code.</p>
+                
+                <input type="file" id="fileInput" style="display: none;">
+                <button class="btn-verify" onclick="document.getElementById('fileInput').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Select Document
+                </button>
+                
+                <div style="margin-top: 20px; padding: 10px; background: #fff8eb; border-radius: 12px; border: 1px solid #ffeeba;">
+                    <p style="font-size: 11px; color: #856404; margin: 0; font-weight: 700;">
+                        <i class="fa-solid fa-circle-info"></i> केवल PDF या JPG फाइल ही स्वीकार्य हैं।
+                    </p>
+                </div>
+            </div>
+        </main>
+<nav class="bottom-nav">
+    <a href="index.html" class="nav-link" onclick="setNavActive(this)">
+        <i class="fa-solid fa-house"></i>
+        <span>HOME</span>
+    </a>
+    <a href="states.html" class="nav-link" onclick="setNavActive(this)">
+        <i class="fa-solid fa-print"></i>
+        <span>PRINT</span>
+    </a>
+    <a href="#" class="nav-link" onclick="setNavActive(this)">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>HISTORY</span>
+    </a>
+    <a href="verify.html" class="nav-link active" onclick="setNavActive(this)">
+        <i class="fa-solid fa-file-shield"></i>
+        <span>VERIFY</span>
+    </a>
+</nav>
+
+
+    <div id="mySidebar" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sb-close-icon" onclick="toggleSidebar()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <div class="sb-user-profile">
+            <div class="sb-avatar">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+            <div class="sb-brand-details">
+                <div class="sb-brand-name">Print<span>Pro</span></div>
+                <div class="sb-tagline">By Aman Designer</div>
+            </div>
+        </div>
+
+        <div class="sb-verified-badge">
+            
+        </div>
+    </div>
+
+    <div class="sidebar-links">
+        <a href="S.html" class="side-link" onclick="setSideActive(this)">
+            <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        
+        <a href="states.html" class="side-link active" onclick="setSideActive(this)">
+            <i class="fa-solid fa-print"></i> 
+            <span>Ration Service</span>
+            <span class="hot-tag">HOT</span>
+        </a>
+
+        <a href="#" class="side-link support-card" onclick="setSideActive(this)">
+            <i class="fa-solid fa-headset"></i>
+            <div class="sup-text">
+                <span>Get Support</span>
+                <small>Available 24/7</small>
+            </div>
+        </a>
+    </div>
+</div>
+
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sb = document.getElementById("mySidebar");
+            const ov = document.getElementById("overlay");
+            if (sb.style.width === "300px") {
+                sb.style.width = "0"; ov.style.display = "none";
+            } else {
+                sb.style.width = "300px"; ov.style.display = "block";
+            }
+        }
+        function setNavActive(element) {
+    // 1. पेज के सभी 'nav-link' से 'active' क्लास को हटा दें
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // 2. जिस लिंक पर यूजर ने क्लिक किया है, उस पर 'active' क्लास जोड़ें
+    element.classList.add('active');
+}
+// verify.html में यह लाइन डालें
+document.getElementById('side-verify').classList.add('active');
+
+// states.html में यह लाइन डालें
+document.getElementById('side-print').classList.add('active');
+function setSideActive(element) {
+    // 1. सभी साइड-लिंक्स से 'active' क्लास हटाएँ
+    const allLinks = document.querySelectorAll('.side-link');
+    allLinks.forEach(link => link.classList.remove('active'));
+    
+    // 2. जिस पर क्लिक हुआ, उस पर 'active' जोड़ें
+    element.classList.add('active');
+}
+  // वर्तमान पेज का नाम पता करें
+    const currentPage = window.location.pathname.split("/").pop();
+
+    // सभी लिंक्स को चेक करें
+    document.querySelectorAll('.nav-link, .side-link').forEach(link => {
+        // अगर लिंक का href और वर्तमान पेज का नाम मैच करता है
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Select State | RationMaker Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-blue: #006aff;
+            --brand-dark: #0f172a;
+            --light-blue: #eef4ff;
+            --bg-page: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--bg-page); 
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-wrapper {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(0,0,0,0.05);
+        }
+
+        /* --- Premium Header --- */
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu-toggle {
+            width: 45px;
+            height: 45px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .brand-section { text-align: center; }
+        .brand-name { font-size: 22px; font-weight: 900; letter-spacing: -1px; }
+        .brand-name span { color: var(--brand-blue); }
+        .brand-tag { 
+            background: var(--brand-blue); 
+            color: white; 
+            font-size: 9px; 
+            padding: 2px 10px; 
+            border-radius: 50px; 
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        /* --- Main Content --- */
+        main {
+            flex: 1;
+            padding: 24px 20px 120px;
+        }
+
+        .page-title { margin-bottom: 25px; }
+        .page-title h1 { font-size: 24px; font-weight: 900; color: var(--brand-dark); }
+        .page-title p { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+        /* --- State Grid --- */
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .state-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 25px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+
+        .state-card:active {
+            transform: scale(0.95);
+            background: var(--light-blue);
+            border-color: var(--brand-blue);
+        }
+
+        .state-icon {
+            width: 60px;
+            height: 60px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--brand-blue);
+        }
+
+        .state-name { font-size: 15px; font-weight: 800; color: var(--brand-dark); }
+        .state-status {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+        .status-active { background: #dcfce7; color: #15803d; }
+        .status-soon { background: #f1f5f9; color: #64748b; }
+
+        /* --- Sidebar Styles --- */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2500;
+            top: 0; left: 0; background: #fff; overflow-x: hidden;
+            transition: 0.5s; display: flex; flex-direction: column;
+            box-shadow: 15px 0 40px rgba(0,0,0,0.1);
+        }
+        .sidebar-header { background: linear-gradient(135deg, #006aff, #00d4ff); padding: 50px 20px 30px; color: #fff; }
+        .side-link { 
+            padding: 16px 20px; text-decoration: none; color: #475569; 
+            font-weight: 700; display: flex; align-items: center; gap: 15px;
+        }
+        .side-link.active { background: var(--light-blue); color: var(--brand-blue); border-radius: 15px; margin: 5px 10px; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 2000; backdrop-filter: blur(4px); }
+
+        /* --- Bottom Nav --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; max-width: 480px;
+            background: white; display: flex; justify-content: space-around;
+            padding: 12px 0 25px; border-top: 1px solid #e2e8f0; z-index: 1000;
+        }
+        .nav-link { text-decoration: none; color: #94a3b8; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-link.active { color: var(--brand-blue); }
+        .nav-link i { font-size: 20px; }
+        .nav-link span { font-size: 10px; font-weight: 800; }
+        /* डिफ़ॉल्ट रंग (ग्रे) */
+.nav-link {
+    color: #94a3b8 !important; 
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+/* एक्टिव होने पर नीला रंग */
+.nav-link.active {
+    color: #006aff !important;
+}
+
+.nav-link.active i {
+    color: #006aff !important;
+}
+/* --- Ultra Premium Sidebar Header --- */
+.sidebar-header {
+    background: linear-gradient(135deg, #006aff 0%, #00d4ff 100%);
+    padding: 45px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    border-radius: 0 0 30px 0; /* नीचे से राउंडेड कोना */
+    overflow: hidden;
+}
+
+/* बैकग्राउंड में एक हल्का सा चमकता हुआ गोला (Design Decor) */
+.sidebar-header::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.15);
+    filter: blur(30px);
+    border-radius: 50%;
+}
+
+.sb-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sb-avatar {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.sb-brand-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.sb-brand-name {
+    font-size: 24px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+.sb-brand-name span {
+    color: #002d6d; /* डार्क ब्लू शेड */
+}
+
+.sb-tagline {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-top: 4px;
+}
+
+.sb-close-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sb-close-icon:active {
+    transform: scale(0.9);
+    background: rgba(0, 0, 0, 0.2);
+}
+/* --- Professional Header Box Styling --- */
+.page-header-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0, 106, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* बैकग्राउंड में हल्का सा ग्लो इफ़ेक्ट */
+.page-header-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 150px;
+    height: 150px;
+    background: rgba(0, 106, 255, 0.05);
+    filter: blur(40px);
+    border-radius: 50%;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    background: #eef4ff;
+    color: #006aff;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.text-info h1 {
+    font-size: 20px;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.text-info p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 2px 0 0;
+    font-weight: 600;
+}
+
+/* Active Badge Style */
+.active-badge {
+    background: #f0fdf4;
+    color: #15803d;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 50px;
+    border: 1px solid #dcfce7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    z-index: 1;
+}
+
+.active-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+        <header>
+            <div class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+            <div class="brand-section">
+                <div class="brand-name">Ration<span>Maker</span></div>
+                <div class="brand-tag">By Aman Designer</div>
+            </div>
+            <div class="menu-toggle" style="background: var(--brand-blue); color: white;">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+        </header>
+
+        <main>
+     <div class="page-header-box">
+    <div class="header-content">
+        <div class="icon-circle">
+            <i class="fa-solid fa-map-location-dot"></i>
+        </div>
+        <div class="text-info">
+            <h1>Select State</h1>
+            <p>अपना राज्य चुनें और सेवा शुरू करें</p>
+        </div>
+    </div>
+    <div class="active-badge">
+        <span class="dot"></span> All India Service
+    </div>
+</div>
+
+
+            <div class="state-grid">
+                <a href="update form1.html" class="state-card">
+                    <div class="state-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <div class="state-name">Jharkhand</div>
+                    <span class="state-status status-active">LIVE NOW</span>
+                </a>
+
+                <a href="#" class="state-card">
+                    <div class="state-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="state-name">Bihar</div>
+                    <span class="state-status status-soon">COMING</span>
+                </a>
+
+                <a href="#" class="state-card">
+                    <div class="state-icon"><i class="fa-solid fa-landmark"></i></div>
+                    <div class="state-name">Uttar Pradesh</div>
+                    <span class="state-status status-soon">COMING</span>
+                </a>
+
+                <a href="#" class="state-card">
+                    <div class="state-icon"><i class="fa-solid fa-building-columns"></i></div>
+                    <div class="state-name">West Bengal</div>
+                    <span class="state-status status-soon">COMING</span>
+                </a>
+            </div>
+        </main>
+
+<nav class="bottom-nav">
+    <a href="S.html" class="nav-link" onclick="setNavActive(this)">
+        <i class="fa-solid fa-house"></i>
+        <span>HOME</span>
+    </a>
+    <a href="states.html" class="nav-link active" onclick="setNavActive(this)">
+        <i class="fa-solid fa-print"></i>
+        <span>PRINT</span>
+    </a>
+    <a href="#" class="nav-link" onclick="setNavActive(this)">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>HISTORY</span>
+    </a>
+    <a href="#" class="nav-link" onclick="setNavActive(this)">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>HELP</span>
+    </a>
+</nav>
+
+    </div>
+
+    <div id="mySidebar" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sb-close-icon" onclick="toggleSidebar()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <div class="sb-user-profile">
+            <div class="sb-avatar">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+            <div class="sb-brand-details">
+                <div class="sb-brand-name">Print<span>Pro</span></div>
+                <div class="sb-tagline">By Aman Designer</div>
+            </div>
+        </div>
+
+        <div class="sb-verified-badge">
+            
+        </div>
+    </div>
+
+    <div class="sidebar-links">
+        <a href="S.html" class="side-link" onclick="setSideActive(this)">
+            <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        
+        <a href="states.html" class="side-link active" onclick="setSideActive(this)">
+            <i class="fa-solid fa-print"></i> 
+            <span>Ration Service</span>
+            <span class="hot-tag">HOT</span>
+        </a>
+
+        <a href="#" class="side-link support-card" onclick="setSideActive(this)">
+            <i class="fa-solid fa-headset"></i>
+            <div class="sup-text">
+                <span>Get Support</span>
+                <small>Available 24/7</small>
+            </div>
+        </a>
+    </div>
+</div>
+
+    <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sb = document.getElementById("mySidebar");
+            const ov = document.getElementById("overlay");
+            if (sb.style.width === "300px") {
+                sb.style.width = "0"; ov.style.display = "none";
+            } else {
+                sb.style.width = "300px"; ov.style.display = "block";
+            }
+        }
+        function setNavActive(element) {
+    // पहले सभी नेविगेशन लिंक से 'active' क्लास हटाएँ
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // जिस पर क्लिक किया गया है, सिर्फ उसे 'active' करें
+    element.classList.add('active');
+}
+function setSideActive(element) {
+    // 1. सबसे पहले Sidebar के सभी 'side-link' से 'active' क्लास हटाएँ
+    const allSideLinks = document.querySelectorAll('.side-link');
+    allSideLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // 2. अब जिस लिंक पर क्लिक हुआ है, उस पर 'active' क्लास जोड़ें
+    element.classList.add('active');
+}
+
+    </script>
+</body>
+</html>
