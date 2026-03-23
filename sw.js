@@ -1,5 +1,5 @@
 // AMAN HUB Service Worker
-const CACHE_NAME = 'aman-hub-v1';
+const CACHE_NAME = ration-card-v1';
 const urlsToCache = [
     './',
     './index.html',
