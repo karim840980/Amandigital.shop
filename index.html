@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ration Card Pro | AMAN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="icon" type="image/png" href="aman.png?v=2">
+<link rel="apple-touch-icon" href="aman.png?v=2">
+  <link rel="manifest" href="manifest.json">  
+    <style>
+        :root {
+            --brand-blue: #006aff;
+            --light-blue: #eef4ff;
+            --border-blue: #cce0ff;
+            --text-dark: #0f172a;
+            --text-blue: #004dc2;
+            --bg-page: #f8fafc;
+        }
+
+        /* Scroll Fix: body and html must allow scrolling */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--bg-page); 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .phone-wrapper {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.05);
+        }
+
+        /* --- Updated Premium Header --- */
+        header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border-bottom: 2px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-wrapper { text-align: left; }
+
+        .brand-main {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .brand-main span { color: var(--brand-blue); }
+
+        .brand-sub {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--brand-blue);
+            background: var(--light-blue);
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .header-right {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #006aff, #00d4ff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0, 106, 255, 0.2);
+        }
+
+        main {
+            flex: 1;
+            padding: 24px 24px 140px; /* Large bottom padding so content doesn't hide */
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            text-align: center;
+        }
+
+        /* Language Switch */
+        .lang-switch {
+            display: flex;
+            background: var(--light-blue);
+            padding: 5px;
+            border-radius: 16px;
+            width: fit-content;
+            margin: 0 auto;
+            border: 1px solid var(--border-blue);
+        }
+
+        .lang-btn {
+            padding: 10px 24px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-blue);
+        }
+
+        .lang-btn.active {
+            background: var(--brand-blue);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,106,255,0.2);
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+
+        /* Color Selection */
+        .color-chips {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .chip {
+            padding: 14px 5px;
+            border-radius: 18px;
+            border: 2px solid var(--border-blue);
+            background: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            color: var(--text-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .chip.active-sel { 
+            border-color: var(--brand-blue); 
+            background: var(--light-blue);
+        }
+
+        /* Preview Area */
+        .preview-area {
+            background: #ffffff;
+            border: 2px solid var(--border-blue);
+            border-radius: 32px;
+            padding: 16px;
+        }
+
+        .card-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 20px;
+            background: #fdfdfd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #mainCardImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: hue-rotate(0deg);
+        }
+
+        /* Main Button */
+        .btn-premium {
+            width: 100%;
+            background: var(--brand-blue);
+            color: #ffffff;
+            padding: 20px;
+            border: none;
+            border-radius: 24px;
+            font-size: 17px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 10px 20px rgba(0, 106, 255, 0.2);
+            text-decoration: none;
+        }
+
+        /* --- Fixed Professional Bottom Nav --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 25px;
+            border-top: 1px solid #e2e8f0;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link.active { color: var(--brand-blue); }
+        .nav-link i { font-size: 20px; }
+        .nav-link span { font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.nav-link.active { 
+    color: var(--brand-blue) !important; 
+}
+.about-ration {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border-blue);
+    border-radius: 28px;
+    margin: 20px 0;
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0, 106, 255, 0.05);
+}
+
+.about-ration h3 {
+    font-size: 18px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.about-ration h3 i { color: var(--brand-blue); }
+
+.about-ration p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.info-item {
+    background: var(--light-blue);
+    padding: 12px 15px;
+    border-radius: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.info-item i {
+    margin-top: 3px;
+    color: var(--brand-blue);
+    font-size: 14px;
+}
+
+.info-text b {
+    display: block;
+    font-size: 13px;
+    color: var(--text-blue);
+    margin-bottom: 2px;
+}
+
+.info-text span {
+    font-size: 11px;
+    color: #64748b;
+}
+/* Space Fix */
+main {
+    flex: 1;
+    padding: 10px 24px 100px; /* Bottom padding कम की गई */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Content को ऊपर से शुरू करने के लिए */
+    gap: 20px; /* हर बॉक्स के बीच बराबर गैप */
+    text-align: center;
+}
+
+/* About Section adjustments */
+.about-ration {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid var(--border-blue);
+    border-radius: 24px;
+    margin-top: 5px; /* ऊपर से गैप कम किया */
+    text-align: left;
+    box-shadow: 0 4px 15px rgba(0, 106, 255, 0.05);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.info-item {
+    background: var(--light-blue);
+    padding: 10px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+/* --- Ultra Modern Fintech Header --- */
+header {
+    padding: 25px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brand-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -1.2px;
+    line-height: 1;
+}
+
+.brand-name span {
+    color: var(--brand-blue);
+    position: relative;
+}
+
+/* ब्रांड के नीचे छोटा सा प्रीमियम बैज */
+.brand-tag {
+    font-size: 10px;
+    font-weight: 800;
+    color: #ffffff;
+    background: linear-gradient(90deg, #006aff, #00d4ff);
+    padding: 3px 10px;
+    border-radius: 50px;
+    width: fit-content;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 106, 255, 0.15);
+}
+
+/* Right Side Icon Design */
+.profile-action {
+    width: 48px;
+    height: 48px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-blue);
+    font-size: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.profile-action:active {
+    transform: scale(0.9);
+    background: var(--light-blue);
+}
+/* --- Sidebar & Menu Toggle Style --- */
+.menu-toggle {
+    font-size: 22px;
+    color: var(--text-dark);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0; /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    transition: 0.4s ease-in-out;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+    background: var(--brand-blue);
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-links {
+    padding: 20px 10px;
+}
+
+.sidebar-links a {
+    padding: 15px 20px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 700;
+    border-radius: 12px;
+    margin-bottom: 5px;
+}
+
+.sidebar-links a i { font-size: 18px; width: 25px; }
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1500;
+}
+
+.close-btn { color: white; font-size: 24px; cursor: pointer; }
+/* --- Modern Premium Sidebar --- */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px); /* Premium Blur Effect */
+    overflow-x: hidden;
+    transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    box-shadow: 15px 0 40px rgba(0, 0, 0, 0.1);
+    border-radius: 0 30px 30px 0;
+}
+
+.sidebar-header {
+    background: linear-gradient(135deg, #006aff, #00d4ff);
+    padding: 40px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.sidebar-header .brand-name {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.sidebar-links {
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-links a {
+    padding: 16px 20px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 700;
+    border-radius: 18px;
+    transition: 0.3s all;
+}
+
+/* Special Styling for Ration Service */
+.service-link {
+    background: #eef4ff;
+    color: #006aff !important;
+    border: 1px solid rgba(0, 106, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-link::after {
+    content: 'HOT';
+    position: absolute;
+    right: 15px;
+    background: #ff4757;
+    color: white;
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 900;
+}
+
+.sidebar-links a i {
+    font-size: 20px;
+    width: 30px;
+    text-align: center;
+}
+
+.sidebar-links a:active {
+    background: #f1f5f9;
+    transform: scale(0.98);
+}
+
+/* Footer in Sidebar */
+.sidebar-footer {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    padding: 0 25px;
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+/* --- Sidebar Main Design --- */
+.sidebar {
+    height: 100%;
+    width: 0; /* शुरू में छुपा रहेगा */
+    position: fixed;
+    z-index: 2500; /* सबसे ऊपर रखने के लिए */
+    top: 0;
+    left: 0;
+    background: #ffffff;
+    overflow-x: hidden;
+    transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    box-shadow: 15px 0 40px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Premium Header --- */
+.sidebar-header {
+    background: linear-gradient(135deg, #006aff 0%, #00d4ff 100%);
+    padding: 50px 20px 30px;
+    position: relative;
+    color: white;
+}
+
+.sb-title {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.sb-title span { color: #003285; }
+
+.sb-tagline {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.sb-status-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+    margin-top: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* --- Links Styling --- */
+.sidebar-links { padding: 20px 15px; flex: 1; }
+
+.side-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    text-decoration: none;
+    color: #475569;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+    transition: 0.3s;
+}
+
+.side-link.active {
+    background: #eef4ff;
+    color: #006aff;
+}
+
+.hot-tag {
+    background: #ff4757;
+    color: white;
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.sb-divider { border: none; border-top: 1px solid #f1f5f9; margin: 15px 0; }
+
+.sidebar-footer { padding: 20px; font-size: 11px; color: #94a3b8; text-align: center; }
+
+/* --- Overlay --- */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+}
+/* Blue Tic Fix: Active state style */
+.side-link.active {
+    background: #eef4ff !important; /* हल्का नीला बैकग्राउंड */
+    color: #006aff !important;     /* गहरा नीला टेक्स्ट */
+}
+
+.side-link.active i {
+    color: #006aff !important;
+}
+
+/* Get Support Premium Box */
+.support-box {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    margin-top: 10px;
+    padding: 18px 20px !important;
+}
+
+.support-box i {
+    color: #64748b;
+    font-size: 20px;
+}
+
+/* जब सपोर्ट बॉक्स पर क्लिक हो */
+.support-box.active {
+    background: #006aff !important;
+    color: white !important;
+    border: 1px solid #006aff;
+}
+
+.support-box.active i, .support-box.active small {
+    color: white !important;
+}
+/* --- Modern 3-Line Menu Style --- */
+.menu-toggle {
+    width: 45px;
+    height: 45px;
+    background: #f8fafc; /* हल्का ग्रे बैकग्राउंड */
+    border: 1px solid #e2e8f0; /* हल्की बॉर्डर */
+    border-radius: 14px; /* प्रीमियम राउंडेड कोना */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #0f172a; /* गहरा काला रंग */
+    font-size: 20px;
+}
+
+/* क्लिक करने पर हल्का दबेगा (Apple Style) */
+.menu-toggle:active {
+    transform: scale(0.92);
+    background: #eef4ff;
+    color: #006aff;
+    border-color: #cce0ff;
+}
+
+/* आइकॉन के अंदर की लाइन्स को स्टैगर लुक देने के लिए */
+.menu-toggle i {
+    transition: 0.3s;
+}
+.wa-pink-container {
+    position: fixed;
+    bottom: 95px;
+    right: 20px;
+    z-index: 10000;
+}
+
+.wa-pink-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 15px;
+    /* राशन कार्ड जैसा पिंक शेड */
+    background: rgba(255, 105, 180, 0.15) !important; 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1.5px solid #ff69b4 !important; /* सॉलिड पिंक बॉर्डर */
+    border-radius: 20px;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
+}
+
+.wa-pink-icon-box {
+    position: relative;
+    font-size: 26px;
+    color: #ff1493 !important; /* Deep Pink Icon */
+}
+
+.wa-pink-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 9px;
+    height: 9px;
+    background: #ff1493;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.wa-pink-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.wa-pink-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: black !important; /* Dark Pink Text */
+}
+
+.wa-pink-name {
+    font-size: 10px;
+    color: Blue;
+    font-weight: 600;
+}
+
+.wa-pink-arrow {
+    color: #ff69b4;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="phone-wrapper">
+<header>
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars-staggered"></i>
+    </div>
+
+    <div class="brand-section">
+        <div class="brand-name">Ration<span>Maker</span></div>
+        <div class="brand-tag">By Aman Designer</div>
+    </div>
+    
+    <div class="profile-action">
+        <i class="fa-solid fa-fingerprint"></i>
+    </div>
+</header>
+
+
+
+        <main>
+            <div class="lang-switch">
+                <button id="hi-btn" class="lang-btn active" onclick="setLanguage('hi')">🇮🇳 हिन्दी</button>
+                <button id="en-btn" class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
+            </div>
+
+            <h1 id="headline">Jharkhand Ration Card Portal – झारखंड राशन कार्ड प्रिंट करें</h1>
+
+            <div class="color-chips">
+                <button id="c-red" class="chip active-sel" onclick="updateTheme('red', 0)">
+                    <i class="fa-solid fa-circle" style="color: #ef4444;"></i> Red
+                </button>
+                <button id="c-yellow" class="chip" onclick="updateTheme('yellow', 55)">
+                    <i class="fa-solid fa-circle" style="color: #f59e0b;"></i> Yellow
+                </button>
+                <button id="c-green" class="chip" onclick="updateTheme('green', 140)">
+                    <i class="fa-solid fa-circle" style="color: #10b981;"></i> Green
+                </button>
+            </div>
+
+            <div class="preview-area">
+                <div class="card-container">
+                    <img id="mainCardImage" src="f.png" alt="Ration Card Preview">
+                </div>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 10px;">Official Preview • Verified by AMAN</p>
+            </div>
+
+            <a href="states.html" class="btn-premium">
+                <span id="btnText">👉 राशन कार्ड बनाना शुरू करें</span> 
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </main>
+
+       <nav class="bottom-nav">
+    <a href="index.html" class="nav-link active" onclick="makeActive(this)">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+    <a href="states.html" class="nav-link" onclick="makeActive(this)">
+        <i class="fa-solid fa-print"></i>
+        <span>Print</span>
+    </a>
+    <a href="#" class="nav-link" onclick="makeActive(this)">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>History</span>
+    </a>
+    <a href="#" class="nav-link" onclick="makeActive(this)">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Help</span>
+    </a>
+</nav>
+<div class="about-ration">
+    <h3 id="bioHeading" style="font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 10px;">
+        <i class="fa-solid fa-circle-info" style="color: var(--brand-blue);"></i> डिजिटल सेवा की जानकारी
+    </h3>
+    
+    <p id="bioText" style="font-size: 12px; color: #64748b; margin-bottom: 12px;">
+        RationMaker Pro पोर्टल के माध्यम से झारखंड के नागरिक अपना डिजिटल राशन कार्ड आसानी से डाउनलोड कर सकते हैं। यह एक सुरक्षित माध्यम है जो आपके प्रिंटिंग अनुभव को बेहतर बनाता है।
+    </p>
+    
+    </div>
+
+<div class="about-ration">
+    <h3><i class="fa-solid fa-circle-info"></i> पोर्टल के बारे में जानकारी</h3>
+    <p>Aman Designer द्वारा निर्मित यह "RationMaker Pro" पोर्टल आपको अपने घर बैठे डिजिटल राशन कार्ड प्रिंट करने की सुविधा प्रदान करता है। हमारा लक्ष्य सरकारी सेवाओं को सरल और सुलभ बनाना है।</p>
+    
+    <div class="info-grid">
+        <div class="info-item">
+            <i class="fa-solid fa-bolt"></i>
+            <div class="info-text">
+                <b>त्वरित सेवा (Instant Service)</b>
+                <span>बिना किसी इंतज़ार के अपना राशन कार्ड कुछ ही सेकंड में जनरेट और डाउनलोड करें।</span>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div class="info-text">
+                <b>उच्च सुरक्षा (High Security)</b>
+                <span>आपका डेटा पूरी तरह से एन्क्रिप्टेड है और हम सरकारी डेटा मानकों का पालन करते हैं।</span>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <i class="fa-solid fa-palette"></i>
+            <div class="info-text">
+                <b>कस्टमाइज्ड कलर थीम्स</b>
+                <span>अपनी पसंद के अनुसार Red, Yellow या Green थीम चुनकर कार्ड को आकर्षक लुक दें।</span>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <i class="fa-solid fa-file-pdf"></i>
+            <div class="info-text">
+                <b>HD क्वालिटी प्रिंट</b>
+                <span>हमारा सिस्टम आपको हाई-रेसोल्यूशन PDF प्रदान करता है जिसे आप PVC कार्ड या पेपर पर प्रिंट कर सकते हैं।</span>
+            </div>
+        </div>
+    </div>
+
+    <p style="margin-top: 15px; font-size: 11px; font-style: italic; color: #94a3b8;">
+        * नोट: यह एक सहायक पोर्टल है। कृपया सुनिश्चित करें कि आप केवल वैध विवरणों का ही उपयोग कर रहे हैं।
+    </p>
+</div>
+
+ <div id="mySidebar" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-close-btn" onclick="toggleSidebar()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="sb-brand-info">
+            <div class="sb-title">Ration<span>Maker</span></div>
+            <div class="sb-tagline">BY AMAN DESIGNER</div>
+        </div>
+        <div class="sb-status-badge">
+            <i class="fa-solid fa-shield-check"></i> Verified Portal
+        </div>
+    </div>
+    
+ <div class="sidebar-links">
+    <a href="index.html" class="side-link active" onclick="setSideActive(this)">
+        <i class="fa-solid fa-house-chimney"></i> Dashboard
+    </a>
+    
+    <a href="states.html" class="side-link" onclick="setSideActive(this)">
+        <i class="fa-solid fa-print"></i> 
+        <span>Ration Print Service</span>
+        <span class="hot-tag">HOT</span>
+    </a>
+
+    <a href="#" class="side-link" onclick="setSideActive(this)">
+        <i class="fa-solid fa-clock-rotate-left"></i> Print History
+    </a>
+    
+    <a href="#" class="side-link" onclick="setSideActive(this)">
+        <i class="fa-solid fa-file-circle-check"></i> Verify Document
+    </a>
+    
+    <hr class="sb-divider">
+    
+    <a href="#" class="side-link support-box" onclick="setSideActive(this)">
+        <i class="fa-solid fa-headset"></i> 
+        <div style="display: flex; flex-direction: column;">
+            <span>Get Support</span>
+            <small style="font-size: 9px; opacity: 0.8;">Available 24/7</small>
+        </div>
+    </a>
+</div>
+
+    <div class="sidebar-footer">
+        <p>© 2026 RationMaker Pro</p>
+        <p style="color: #006aff; font-weight: 800;">v2.5 Premium Edition</p>
+    </div>
+</div>
+
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+   
+
+
+
+<div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+<div class="wa-pink-container">
+    <a href="https://wa.me/918409805470" class="wa-pink-card" target="_blank">
+        <div class="wa-pink-icon-box">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="wa-pink-dot"></span>
+        </div>
+        <div class="wa-pink-details">
+            <span class="wa-pink-label">Support Online</span>
+            <span class="wa-pink-name">Chat with Aman</span>
+        </div>
+        <i class="fa-solid fa-chevron-right wa-pink-arrow"></i>
+    </a>
+</div>
+
+
+    <script>
+        const langData = {
+            hi: { h: "Jharkhand Ration Card Portal – झारखंड राशन कार्ड प्रिंट करें", b: "👉 राशन कार्ड बनाना शुरू करें" },
+            en: { h: "Jharkhand Ration Card Portal – Generate Your Card Online", b: "👉 Start Making Ration Card" }
+        };
+
+        function setLanguage(l) {
+            document.getElementById('hi-btn').classList.toggle('active', l === 'hi');
+            document.getElementById('en-btn').classList.toggle('active', l === 'en');
+            document.getElementById('headline').innerText = langData[l].h;
+            document.getElementById('btnText').innerText = langData[l].b;
+        }
+
+        function updateTheme(type, hue) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active-sel'));
+            document.getElementById('c-' + type).classList.add('active-sel');
+            const img = document.getElementById('mainCardImage');
+            img.style.filter = `hue-rotate(${hue}deg) saturate(1.3)`;
+        }
+        function makeActive(element) {
+    // पहले से मौजूद सभी active क्लास को हटा दें
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // जिस बटन पर क्लिक किया गया है, उसे 'active' (नीला) बना दें
+    element.classList.add('active');
+}
+function toggleSidebar() {
+    const sidebar = document.getElementById("mySidebar");
+    const overlay = document.getElementById("overlay");
+    
+    if (sidebar.style.width === "280px") {
+        sidebar.style.width = "0";
+        overlay.style.display = "none";
+    } else {
+        sidebar.style.width = "280px";
+        overlay.style.display = "block";
+    }
+}
+// Sidebar को खोलने और बंद करने के लिए
+function toggleSidebar() {
+    const sidebar = document.getElementById("mySidebar");
+    const overlay = document.getElementById("overlay");
+    
+    if (sidebar.style.width === "300px") {
+        sidebar.style.width = "0";
+        overlay.style.display = "none";
+    } else {
+        sidebar.style.width = "300px";
+        overlay.style.display = "block";
+    }
+}
+
+// Click करने पर Blue Highlighting के लिए
+function setSideActive(element) {
+    document.querySelectorAll('.side-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    element.classList.add('active');
+    // अगर आप चाहते हैं कि क्लिक करने के बाद साइडबार बंद हो जाए:
+    // toggleSidebar(); 
+}
+
+    </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('App Ready!'))
+        .catch(err => console.log('Error:', err));
+    });
+  }
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log("Aman Digital App Ready!"))
+      .catch(err => console.error("Error:", err));
+  }
+</script>
+</script>
+</body>
+</html>

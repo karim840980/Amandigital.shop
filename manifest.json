@@ -1,0 +1,22 @@
+{
+  "name": "Ration Card Pro | AMAN",
+  "short_name": "RationMaker",
+  "description": "Digital Ration Card Printing Portal by Aman Digital",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#006aff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "aman.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "aman.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
